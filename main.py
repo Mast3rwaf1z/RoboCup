@@ -41,7 +41,7 @@ def Play_Music():                                           #Musikfunktion
     Tokyo_Drift_Done=1
     Rick_Roll_Done=0
     ev3.speaker.play_file("Pornhub-30.rsf")                 #Spil intro musik
-    wait(3000)
+    wait(1000)
     
     while opgavenr<3:                                       #Spil musik for opgaver 1-2
         if Lydeffekt==1:
@@ -81,8 +81,10 @@ def Play_Music():                                           #Musikfunktion
             Tokyo_Drift_Done=1
             if opgavenr==9:
                 wait(2000)
+        elif opgavenr==9:
+            wait(2000)
         else:
-            break
+            wait(200)
     Section_number=1
     while opgavenr==9:                                      #Spil musik for opgave 9
         ev3.light.on(Color.RED)
@@ -104,7 +106,7 @@ greyLine = colorS.reflection()                              # Definer farven gr�
 robot.turn(-45)                                             # Drej -45 grader
 white = colorS.reflection()                                 # Definer farven hvid     
 robot.turn(45)                                              # Drej 45 grader
-threshold = (greyLine + white) / 2                          # Definer threshhold hvor sensor skal skifte imellem grå og hvid
+threshold = (greyLine + white) / 2                          # Definer threshold hvor sensor skal skifte imellem grå og hvid
 blackLines = greyLine / 3                                   # Definer sort streg
     
 def drive(x):                                               # Definerer en general drive funktion
@@ -230,7 +232,7 @@ def Opgaver():                                              # Definer opgaverne 
         while colorS.reflection() > blackLines:             # Kører indtil den ser en sort streg
             drive(50)
         robot.straight(500)                                 # Kører 500 mm frem
-        robot.turn(-32)                                     # Drejer 32 grader til venstre
+        robot.turn(-30)                                     # Drejer 32 grader til venstre
 
         cMotor_Stalled=0                                    # definerer variabel
         robot.reset()                                       # Reset distancen til målskive og måler ny distance fra målskive til flaske
@@ -267,8 +269,21 @@ def Opgaver():                                              # Definer opgaverne 
         rMotor.run(200)                                     #Kør højer moter med hastighed på 200 grader per sekund
         wait(881)                                           #Vent 881 millisekunder
         lMotor.run(298.08)                                  #Kør venstre moter med hastighed på 298.08 grader per sekund
-        rMotor.run(200)                                     #Kør højer moter med hastighed på 200 grader per sekund
-        wait(7168)                                          #Vent 7168 millisekunder
+        wait(3584)                                          #Vent 7168 millisekunder
+        Turn_Time=0
+        while True:
+            if colorS.reflection()>threshold:
+                lMotor.run(298.08)
+                wait(10)
+                Turn_Time+=10
+            else:
+                lMotor.run(-200)
+                wait(Turn_Time*0.145)
+                lMotor.stop()
+                rMotor.stop()
+                break
+                
+
 
     elif opgavenr == 7:                                     # Murparkour skrrrt - Faur
         robot.stop()                                        # Stop drivebase
@@ -290,32 +305,39 @@ def Opgaver():                                              # Definer opgaverne 
         rMotor.run(200)                                     #Kør højer moter med hastighed på 200 grader per sekund
         wait(881)                                           #Vent 881 millisekunder
         lMotor.run(298.08)                                  #Kør venstre moter med hastighed på 298.08 grader per sekund    
-        rMotor.run(200)                                     #Kør højer moter med hastighed på 200 grader per sekund
-        wait(7168)                                          #Vent 7168 millisekunder
-        lMotor.run(200)                                     #Kør venstre moter med hastighed på 200 grader per sekund
-        rMotor.run(200)                                     #Kør højer moter med hastighed på 200 grader per sekund
-        #wait(400)                                           #Vent 700 millisekunder
-        lMotor.run(-200)                                    #Kør venstre moter med hastighed på -200 grader per sekund    
-        rMotor.run(200)                                     #Kør højer moter med hastighed på 200 grader per sekund
-        wait(1581)                                          #Vent 1581 millisekunder
+        wait(3584)                                          #Vent 3584 millisekunder
+        Turn_Time=0
+        while True:
+            if colorS.reflection()>threshold:
+                lMotor.run(298.08)
+                wait(10)
+                Turn_Time+=10
+            else:
+                lMotor.run(200)
+                wait(500)
+                lMotor.run(-200)
+                wait((Turn_Time)*0.185)
+                lMotor.stop()
+                rMotor.stop()
+                break
 
     elif opgavenr == 9:                                     #Landingsbane - Thomas
         global active
-        Section_number=1
         while active==1:    
             if Tokyo_Drift_Done==1:    
+                robot.stop()
                 wait(6000)
                 lbane = 0
                 robot.straight(15)
-                while(lbane<200):
+                while(lbane<150):
                     drive(20)
                     wait(1)
                     lbane += 1
                 robot.stop()
-                cMotor.run_until_stalled(-150)
                 robot.settings(60)                          #Gør robbotens hastighed mindre
                 robot.straight((300/2) * 10)                #kører udregnet distance og stop programmet
                 robot.stop()
+                cMotor.run_until_stalled(-150)
                 rMotor.run(50)
                 lMotor.run(-50)
                 while USSR_Done==0:
