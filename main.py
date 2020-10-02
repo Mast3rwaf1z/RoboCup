@@ -19,7 +19,7 @@ ultraS = UltrasonicSensor(Port.S4)
 ev3.speaker.set_volume(100)                                 #Set volume to 100%
 Lydeffekt=0                                                 #Variable for at start en lyd
 Section_number=1                                            #Variable for hvilket sektion af sangen der skal spilles
-opgavenr =  4                                               #Variable for hvilken opgave der skal køres
+opgavenr =  0                                               #Variable for hvilken opgave der skal køres
 active = 1                                                  #Variable der viser om robotten skal kører
 glCount = 0                                                 #Grey line count. Bruges til opgave 4 med de parallele linjer
 
