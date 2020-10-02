@@ -19,7 +19,7 @@ ultraS = UltrasonicSensor(Port.S4)
 ev3.speaker.set_volume(100)                                 #Set volume to 100%
 Lydeffekt=0                                                 #Variable for at start en lyd
 Section_number=1                                            #Variable for hvilket sektion af sangen der skal spilles
-opgavenr =  0                                               #Variable for hvilken opgave der skal køres
+opgavenr =  4                                               #Variable for hvilken opgave der skal køres
 active = 1                                                  #Variable der viser om robotten skal kører
 glCount = 0                                                 #Grey line count. Bruges til opgave 4 med de parallele linjer
 
@@ -102,7 +102,7 @@ Music_Thread.start()                                        #Start musikfunktion
 cMotor.run_until_stalled(-100)                              #Sæt gripperen til at være helt åben
 
 #Tjek farver
-greyLine = colorS.reflection()                              # Definer farven grå
+greyLine = colorS.reflection() + 2                             # Definer farven grå
 robot.turn(-45)                                             # Drej -45 grader
 white = colorS.reflection()                                 # Definer farven hvid     
 robot.turn(45)                                              # Drej 45 grader
@@ -133,7 +133,7 @@ def Opgaver():                                              # Definer opgaverne 
         robot.turn(45)                                      # Robotten skal dreje 45 grader
 
         while colorS.reflection() > greyLine:               # Kør ligeud indtil sensoren registrerer grå overflade
-            robot.drive(100, 0)                             
+            robot.drive(100, 0)                            
 
         robot.straight(50)
         robot.stop()
@@ -204,7 +204,7 @@ def Opgaver():                                              # Definer opgaverne 
             drive(100)                                      # Skal den følge linjen ned af vippen 
             vippeTime += 1
         Lydeffekt=0
-        robot.straight(600)
+        robot.straight(580)
         robot.turn(-90)                                     # Defefter drejer den til venstre efter vippen
         
         #########################
@@ -232,7 +232,7 @@ def Opgaver():                                              # Definer opgaverne 
         while colorS.reflection() > blackLines:             # Kører indtil den ser en sort streg
             drive(50)
         robot.straight(500)                                 # Kører 500 mm frem
-        robot.turn(-30)                                     # Drejer 32 grader til venstre
+        robot.turn(-26)                                     # Drejer 32 grader til venstre
 
         cMotor_Stalled=0                                    # definerer variabel
         robot.reset()                                       # Reset distancen til målskive og måler ny distance fra målskive til flaske
@@ -246,7 +246,7 @@ def Opgaver():                                              # Definer opgaverne 
             else:                                           # Robotten fortsætter med at køre indtil den ser flasken
                 robot.drive(100,0)
 
-        robot.straight(-Distance_to_bottle-170)             # Robotten bakker tilbage til midten af målskiven
+        robot.straight(-Distance_to_bottle-200)             # Robotten bakker tilbage til midten af målskiven
         cMotor.run_until_stalled(-150)                      # Sætter flasken ned
         Lydeffekt=1                                         # Spil Lydeffekt 1 (Bomb has been planted)
         robot.straight(20)                                  # Skubber flasken
@@ -273,7 +273,7 @@ def Opgaver():                                              # Definer opgaverne 
         Turn_Time=0
         while True:
             if colorS.reflection()>threshold:
-                lMotor.run(298.08)
+                lMotor.run(290.08)
                 wait(10)
                 Turn_Time+=10
             else:
@@ -291,11 +291,11 @@ def Opgaver():                                              # Definer opgaverne 
         rMotor.run(200)                                     # Kør højre motor med drivespeed
         wait(4523.89)                                       # Vent indtil sving 1
         lMotor.run(200*0.03)                                # Sæt venstre motor til ratio 1
-        wait(1735.67)                                       # Vent indtil sving 2
-        lMotor.run(200*1.97)                                # Sæt venstre motor til ratio 2
-        wait(3471.33)                                       # Vent indtil sving 3
+        wait(1577.93)                                       # Vent indtil sving 2
+        lMotor.run(200*1.98)                                # Sæt venstre motor til ratio 2
+        wait(3155.87)                                       # Vent indtil sving 3
         lMotor.run(200*0.03)                                # Sæt venstre motor tilbage til ratio 1
-        wait(1735.67)                                       # Vent indtil sving er færdig
+        wait(1577.93)                                       # Vent indtil sving er færdig
         lMotor.run(200)                                     # Sæt venstre motor drivespeed = højre motor
         wait(2500)                                          # Kør ligeud indtil robotten når den grå streg
 
@@ -316,7 +316,7 @@ def Opgaver():                                              # Definer opgaverne 
                 lMotor.run(200)
                 wait(500)
                 lMotor.run(-200)
-                wait((Turn_Time)*0.185)
+                wait((Turn_Time+3000)*0.185)
                 lMotor.stop()
                 rMotor.stop()
                 break
@@ -335,7 +335,7 @@ def Opgaver():                                              # Definer opgaverne 
                     lbane += 1
                 robot.stop()
                 robot.settings(60)                          #Gør robbotens hastighed mindre
-                robot.straight((300/2) * 10)                #kører udregnet distance og stop programmet
+                robot.straight((290/2) * 10)                #kører udregnet distance og stop programmet
                 robot.stop()
                 cMotor.run_until_stalled(-150)
                 rMotor.run(50)
